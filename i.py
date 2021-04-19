@@ -1,12 +1,14 @@
 from pygame import *
 from random import randint
 
+clock = time.Clock()
 
 print("Управление на WASD, q - ускорить перемещение, e - замедлить, лкм - телепортироваться вперед")
 
 life = 3
 
-
+start_time = time.time()
+cur_time = start_time
 
 font.init()
 font2 = font.SysFont(None, 36)
@@ -16,6 +18,7 @@ lose = font1.render('You lose!', True, (255,25,255))
 
 mixer.init()
 mixer.music.load('musica.ogg')
+mixer.music.play()
 
 img_back = "background.jpg" 
 img_hero = "noletmediem.png" 
@@ -65,8 +68,8 @@ class Led(GameSprite):
     def update(self):
         self.rect.y += self.speed
         if self.rect.y > win_height:
-            self.rect.x = randint(80, win_width - 80)
-            self.rect.y = 0
+            self.rect.x = randint(5, win_width - 5)
+            self.rect.y = -100
 
 win_width = 700
 win_height = 500
@@ -94,14 +97,17 @@ while run:
         if e.type == QUIT:
             run = False
 
-
         elif e.type == MOUSEBUTTONDOWN:
             if e.button == 1:
                 if hero.rect.y > 200:
                     hero.rect.y = hero.rect.y - 175
 
-
     if not finish:
+        new_time = time.time()
+
+        if new_time - start_time >= 60:
+            window.blit(win,(250,250))
+            finish = True
         if life == 3:
             life_color = (0,150,0)
 
@@ -161,4 +167,4 @@ while run:
             led = Led(img_kamen, randint(5, win_width - 5), -40, 50, 100, randint(10,13))
             leds.add(led)
 
-    time.delay(50)
+    clock.tick(40)
