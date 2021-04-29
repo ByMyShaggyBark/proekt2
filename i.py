@@ -7,7 +7,7 @@ print("Управление на WASD, q - ускорить перемещени
 
 life = 3
 
-start_time = time.time()
+start_time = time.get_ticks() # заменил метод объекта
 cur_time = start_time
 
 font.init()
@@ -103,7 +103,7 @@ while run:
                     hero.rect.y = hero.rect.y - 175
 
     if not finish:
-        new_time = time.time()
+        new_time = time.get_ticks()
 
         if new_time - start_time >= 60:
             window.blit(win,(250,250))
