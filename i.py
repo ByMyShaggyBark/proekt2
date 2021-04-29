@@ -1,14 +1,12 @@
 from pygame import *
 from random import randint
 
-clock = time.Clock()
 
 print("Управление на WASD, q - ускорить перемещение, e - замедлить, лкм - телепортироваться вперед")
 
 life = 3
 
-start_time = time.get_ticks() # заменил метод объекта
-cur_time = start_time
+start_time = time.get_ticks()  
 
 font.init()
 font2 = font.SysFont(None, 36)
@@ -18,7 +16,7 @@ lose = font1.render('You lose!', True, (255,25,255))
 
 mixer.init()
 mixer.music.load('musica.ogg')
-mixer.music.play()
+mixer.music.play(-1)
 
 img_back = "background.jpg" 
 img_hero = "noletmediem.png" 
@@ -103,11 +101,8 @@ while run:
                     hero.rect.y = hero.rect.y - 175
 
     if not finish:
-        new_time = time.get_ticks()
-
-        if new_time - start_time >= 60:
-            window.blit(win,(250,250))
-            finish = True
+        seconds=(time.get_ticks()-start_time)/1000
+       
         if life == 3:
             life_color = (0,150,0)
 
@@ -136,17 +131,13 @@ while run:
             sprite.spritecollide(hero, leds, True)
             life = life - 1
 
-        if sprite.spritecollide(hero, monsters, False):
-            finish = True
-            window.blit(lose,(200,200))
-
-        if sprite.spritecollide(hero, leds, False):
-            finish = True
-            window.blit(lose,(200,200))
-
         if life <= 0:
             finish = True
             window.blit(lose,(200,200))
+
+        if seconds>60:
+            finish = True
+            window.blit(win,(250,250))
 
         display.update()
 
@@ -157,8 +148,10 @@ while run:
             b.kill()
         for b in leds:
             b.kill()
-
+       
         time.delay(2000)
+        start_time = time.get_ticks()  
+        
         for i in range(1,20):
             monster = Enemy(img_enemy, randint(5, win_width - 5), -40, 40,150, randint(10,13))
             monsters.add(monster)
@@ -167,4 +160,5 @@ while run:
             led = Led(img_kamen, randint(5, win_width - 5), -40, 50, 100, randint(10,13))
             leds.add(led)
 
-    clock.tick(40)
+    time.delay(40)
+display.update()
