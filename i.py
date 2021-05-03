@@ -102,7 +102,7 @@ while run:
 
     if not finish:
         seconds=(time.get_ticks()-start_time)/1000
-       
+        sec_remain = font1.render(str(seconds),True,(255,25,255))       
         if life == 3:
             life_color = (0,150,0)
 
@@ -116,6 +116,7 @@ while run:
 
         text_life = font1.render(str(life), 1, life_color)
         window.blit(text_life, (650, 10))
+        window.blit(sec_remain, (300, 250))
 
         hero.update()
         monsters.update()
